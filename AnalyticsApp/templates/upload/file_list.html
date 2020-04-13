@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja-jp" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>アップロード一覧</title>
+  </head>
+  <body>
+
+
+    <h2>これらはアップロードファイルの一覧です.</h2>
+    {% for upload in uploads %}
+    #{{upload}}
+    <a href ="{% url 'uploads:detail' upload.id %}">{{upload.upload_date}}</a>
+    <br/><br/>
+    {% endfor %}
+  </body>
+</html>
