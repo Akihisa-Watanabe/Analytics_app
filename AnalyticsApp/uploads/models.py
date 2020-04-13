@@ -23,6 +23,6 @@ class Upload(models.Model):
     class Meta(object):
         db_table = 'upload'
 
-    name = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, verbose_name='投稿者')
+    #name = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, verbose_name='投稿者')
     file = models.FileField(verbose_name='ファイル', upload_to=get_file_path, validators=[validate_is_csv])
     upload_date = models.DateField(verbose_name='アップロード日', auto_now=True)
