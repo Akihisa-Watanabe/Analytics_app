@@ -1,3 +1,4 @@
+{% extends "home.html" %}
 <!DOCTYPE html>
 <html lang="ja-jp" dir="ltr">
   <head>
@@ -5,13 +6,15 @@
     <title>アップロード一覧</title>
   </head>
   <body>
+    {%block content%}
 
 
-    <h2>これらはアップロードファイルの一覧です.</h2>
-    {% for upload in uploads %}
-    #{{upload}}
-    <a href ="{% url 'uploads:detail' upload.id %}">{{upload.upload_date}}</a>
+    <h2>アップロードファイル一覧</h2>
+    {% for query in queryset %}
+    <a href ="{% url 'uploads:detail' query.file_id %}">＃{{query.file_id|add:1}}</a>({{query.upload_date}})
     <br/><br/>
+
     {% endfor %}
+    {% endblock%}
   </body>
 </html>
