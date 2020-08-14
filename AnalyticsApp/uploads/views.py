@@ -64,30 +64,64 @@ upload = UploadView.as_view()
 class DetailView(LoginRequiredMixin, View):
     def get(self, request, file_id, *args, **kwargs):
         path=settings.MEDIA_ROOT+'/files/upload/{0}/{1}'.format(self.request.user.id, file_id)
-        data= pd.read_csv(path, names=['ax','ay','az','gx','gy','gz'])
-        data = pd.Series(data['gx'], dtype='int')
-        originalData = np.array(data)
-        N=len(originalData)
+        axis =['ax','ay','az','gx','gy','gz','mx','my','mz']
+        data= pd.read_csv(path, names=axis)
+        ax=pd.Series(data['ax'], dtype='int')
+        ay=pd.Series(data['ay'], dtype='int')
+        az=pd.Series(data['az'], dtype='int')
+        gx=pd.Series(data['gx'], dtype='int')
+        gy=pd.Series(data['gy'], dtype='int')
+        gz=pd.Series(data['gz'], dtype='int')
+        mx=pd.Series(data['mx'], dtype='int')
+        my=pd.Series(data['my'], dtype='int')
+        mz=pd.Series(data['mz'], dtype='int')
+
+        ax=np.array(ax)
+        ay=np.array(ay)
+        az=np.array(az)
+        gx=np.array(gx)
+        gy=np.array(gy)
+        gz=np.array(gz)
+        mx=np.array(mx)
+        my=np.array(my)
+        mz=np.array(mz)
+
+        
+
+
         dt = 0.005
-
-        filteredData = remove_noise(originalData,dt,N)
-        maximal_idx=find_peaks(filteredData,N)
-        time_per_step =[]
-        for i in range(1,len(maximal_idx)):
-            time_per_step.append(maximal_idx[i]-maximal_idx[i-1])
-
-
-        x=[i for i in range(len(time_per_step))]
-
-
+        N = len(ax)
 
         t = np.arange(0, N*dt,dt) #時間軸
-        plot1 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="angular velocity",plot_width=800,plot_height=600)
-        plot1.line(t,filteredData)
+        plot1 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="ax",plot_width=1300,plot_height=700)
+        plot1.line(t,ax)
+        
 
-        plot2 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="angular velocity",plot_width=800,plot_height=600)
-        plot2.line(x,time_per_step)
-        script, div = components([plot1,plot2])
+        plot2 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="ay",plot_width=1300,plot_height=700)
+        plot2.line(t,ay)
+
+        plot3 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="az",plot_width=1300,plot_height=700)
+        plot3.line(t,az)
+
+        plot4 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="gx",plot_width=1300,plot_height=700)
+        plot4.line(t,gx)
+
+        plot5 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="gy",plot_width=1300,plot_height=700)
+        plot5.line(t,gy)
+
+        plot6 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="gz",plot_width=1300,plot_height=700)
+        plot6.line(t,gz)
+
+        plot7 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="mx",plot_width=1300,plot_height=700)
+        plot7.line(t,mx)
+
+        plot8 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="my",plot_width=1300,plot_height=700)
+        plot8.line(t,my)
+
+        plot9 = figure(x_axis_label="time",x_axis_type="datetime",y_axis_label="mz",plot_width=1300,plot_height=700)
+        plot9.line(t,mz)
+
+        script, div = components([plot1,plot2, plot3,plot4,plot5,plot6,plot7,plot8,plot9])
         return render_to_response( 'upload/file_detail.html',{'script' : script , 'div' : div} )
 
 
